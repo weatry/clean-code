@@ -26,7 +26,7 @@ public class ReaderWriterLock {
         rwLock.readLock().lock();
         try {
             // Perform read operation
-            System.out.println("Reading shared resource: " + sharedResource);
+            System.out.printf("%s is reading shared resource: %s\n", Thread.currentThread().getName(), sharedResource);
         } finally {
             rwLock.readLock().unlock();
         }

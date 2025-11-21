@@ -1,5 +1,8 @@
 package com.github.budwing.clean.concurrency.pattern;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Immutable Object is a concurrency pattern where an object's state cannot be modified after it has been created.
  * This immutability ensures that the object can be safely shared between multiple threads without the need for synchronization,
@@ -12,10 +15,19 @@ package com.github.budwing.clean.concurrency.pattern;
  */
 public class ImmutableObject {
     private final int value;
+    // accounts only has getter method, but is it really immutable field?
+    private final List accounts;
+
     public ImmutableObject(int value) {
         this.value = value;
+        this.accounts = new ArrayList<>();
     }
+
     public int getValue() {
         return value;
+    }
+
+    public List getAccounts() {
+        return accounts;
     }
 }

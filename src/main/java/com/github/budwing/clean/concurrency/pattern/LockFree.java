@@ -68,13 +68,15 @@ public class LockFree {
         // update with version check
         public boolean updateWithVersion(int id, String newData, int expectedVersion) {
             Entity entity = getEntity(id);
-            if (entity.version != expectedVersion) {
-                return false; // version conflict
+            synchronized(entity) { // if it's database updating, this is not required
+                if (entity.version != expectedVersion) {
+                    return false; // version conflict
+                }
+                // update data and version
+                entity.data = newData;
+                entity.version++;
+                return true;
             }
-            // update data and version
-            entity.data = newData;
-            entity.version++;
-            return true;
         }
     }
 
@@ -85,7 +87,7 @@ public class LockFree {
         public boolean updateData(String newData, long clientTimestamp) {
             synchronized (this) {
                 if (this.last_modified_timestamp != clientTimestamp) {
-                    return false; // 时间戳不匹配
+                    return false; // timestamp not matching
                 }
                 this.data = newData;
                 this.last_modified_timestamp = System.currentTimeMillis();
